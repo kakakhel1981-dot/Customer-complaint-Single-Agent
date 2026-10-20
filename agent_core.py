@@ -1,4 +1,6 @@
 import os
+import asyncio
+import contextlib
 from crewai import Agent, Task, Crew, Process
 from crewai_tools import PDFSearchTool, SerperDevTool
 from dotenv import load_dotenv
@@ -10,6 +12,13 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
     Initializes the CrewAI agent with PDF RAG and Web Search capabilities,
     then executes the task based on the user query and chat history.
     """
+    # FIX: Ensure an asyncio event loop exists for Streamlit's worker threads
+    try:
+        asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
     # 1. Initialize Tools
     pdf_tool = PDFSearchTool(pdf=uploaded_file_path)
     search_tool = SerperDevTool()
@@ -31,7 +40,6 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
     # 3. Format Short-Term Conversation History
     history_context = ""
     if chat_history:
-        # Keep the last 4 turns for context
         recent_messages = chat_history[-4:]
         history_context = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in recent_messages])
         
