@@ -2,5 +2,4 @@ crewai==0.102.0
 crewai-tools==0.47.1
 streamlit==1.42.0
 python-dotenv==1.0.1
-instructor==1.7.0
-rich==13.9.4
+instructor>=1.7.2
