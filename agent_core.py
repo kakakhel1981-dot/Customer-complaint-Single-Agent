@@ -1,6 +1,10 @@
-
 import os
 import asyncio
+import nest_asyncio
+
+# Apply nest_asyncio patch to fix Streamlit threading loop issues
+nest_asyncio.apply()
+
 from crewai import Agent, Task, Crew, Process
 from crewai_tools import PDFSearchTool, SerperDevTool
 from dotenv import load_dotenv
@@ -12,11 +16,12 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
     Initializes the CrewAI agent with PDF RAG and Web Search capabilities,
     then executes the task based on the user query and chat history.
     """
-    # ROBUST EVENT LOOP FIX FOR PYTHON 3.10+ & STREAMLIT THREADS
+    # Ensure event loop exists for safety
     try:
         loop = asyncio.get_event_loop()
         if loop.is_closed():
-            raise RuntimeError("Event loop is closed.")
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
     except RuntimeError:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
