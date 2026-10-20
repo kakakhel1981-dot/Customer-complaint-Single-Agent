@@ -5,7 +5,7 @@ import nest_asyncio
 # Apply nest_asyncio patch to fix Streamlit threading loop issues
 nest_asyncio.apply()
 
-from crewai import Agent, Task, Crew, Process
+from crewai import Agent, Task, Crew, Process, LLM
 from crewai_tools import PDFSearchTool, SerperDevTool
 from dotenv import load_dotenv
 
@@ -26,11 +26,17 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
+    # Explicitly configure modern LLM to prevent legacy fallback errors (APIRemovedInV1)
+    my_llm = LLM(
+        model="openai/gpt-4o-mini",
+        temperature=0.2
+    )
+
     # 1. Initialize Tools
     pdf_tool = PDFSearchTool(pdf=uploaded_file_path)
     search_tool = SerperDevTool()
     
-    # 2. Define the Single Agent
+    # 2. Define the Single Agent with explicit modern LLM
     complaint_agent = Agent(
         role='Customer Support Specialist',
         goal='Accurately answer customer complaints and questions using the uploaded KT (Knowledge Transfer) document.',
@@ -40,6 +46,7 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
             "If brief external or supplementary context is required to handle the query completely, use the web search tool."
         ),
         tools=[pdf_tool, search_tool],
+        llm=my_llm,
         verbose=True,
         memory=True
     )
@@ -53,7 +60,7 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
     # 4. Define the Task
     task_description = f"""
     Handle the customer complaint or question below. 
-    Rely primarily on the uploaded KT document.
+    Rely primarily on the KT document.
     
     Recent Conversation History:
     {history_context}
