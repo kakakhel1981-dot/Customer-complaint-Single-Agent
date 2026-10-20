@@ -1,7 +1,5 @@
 streamlit==1.42.0
 python-dotenv==1.0.1
-crewai>=0.100.0
-crewai-tools>=0.40.0
+crewai[tools]>=0.100.0
 instructor>=1.7.2,<1.15.0
 nest-asyncio==1.6.0
-chromadb>=0.4.22
