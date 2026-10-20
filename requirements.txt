@@ -3,4 +3,4 @@ crewai-tools==0.47.1
 streamlit==1.42.0
 python-dotenv==1.0.1
 instructor==1.15.4
-rich>=13.7.0,<15.0.0
+rich==14.2.0
