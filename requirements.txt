@@ -2,3 +2,4 @@ streamlit==1.42.0
 python-dotenv==1.0.1
 crewai[tools,openai]>=1.15.4
 nest-asyncio==1.6.0
+rich==14.2.0
