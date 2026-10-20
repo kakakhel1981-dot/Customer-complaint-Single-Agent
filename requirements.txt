@@ -1,5 +1,6 @@
 streamlit==1.42.0
 python-dotenv==1.0.1
 crewai[tools]>=0.100.0
-instructor>=1.7.2,<1.15.0
+openai==0.28.1
+instructor==0.5.2
 nest-asyncio==1.6.0
