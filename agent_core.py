@@ -26,21 +26,12 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
-    # Explicitly configure modern LLM to prevent legacy fallback errors (APIRemovedInV1)
- openai_api_key = os.getenv("OPENAI_API_KEY")
-
-if not openai_api_key:
-    raise ValueError(
-        "OPENAI_API_KEY is missing. "
-        "Add it in Streamlit Cloud → Settings → Secrets."
+    # Explicitly configure modern LLM to prevent legacy fallback errors
+    my_llm = LLM(
+        model="openai/gpt-4o-mini",
+        temperature=0.2
     )
 
-my_llm = LLM(
-    model="openai/gpt-4o-mini",
-    api_key=openai_api_key,
-    temperature=0.2,
-    timeout=120,
-)
     # 1. Initialize Tools
     pdf_tool = PDFSearchTool(pdf=uploaded_file_path)
     search_tool = SerperDevTool()
