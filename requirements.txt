@@ -1,6 +1,8 @@
 streamlit==1.42.0
 python-dotenv==1.0.1
-crewai[tools]>=0.100.0
+crewai>=0.100.0
+crewai-tools>=0.40.0
 openai>=1.14.0
+PyMuPDF==1.25.1
 rich==13.9.4
 nest-asyncio==1.6.0
