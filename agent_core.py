@@ -38,9 +38,9 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
-    # Configure the LLM using the gpt-oss-120b model with Groq routing
+    # Use the active, high-speed Groq model
     my_llm = LLM(
-        model="groq/gpt-oss-120b",
+        model="groq/openai/gpt-oss-120b",
         temperature=0.2
     )
 
