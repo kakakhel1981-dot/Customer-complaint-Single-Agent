@@ -38,19 +38,19 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
-    # Explicitly configure modern LLM
+    # Use Groq instead of OpenAI to avoid billing limits
     my_llm = LLM(
-        model="openai/gpt-4o-mini",
+        model="groq/llama-3.3-70b-versatile",
         temperature=0.2
     )
 
-    # 1. Extract PDF text directly (bypassing broken PDFSearchTool / embedchain bugs)
+    # 1. Extract PDF text directly
     kt_document_text = extract_pdf_text(uploaded_file_path)
 
     # 2. Initialize Web Search Tool
     search_tool = SerperDevTool()
     
-    # 3. Define the Single Agent with explicit modern LLM
+    # 3. Define the Single Agent
     complaint_agent = Agent(
         role='Customer Support Specialist',
         goal='Accurately answer customer complaints and questions using the provided Knowledge Transfer (KT) document text.',
