@@ -40,7 +40,7 @@ def run_complaint_agent(uploaded_file_path: str, user_query: str, chat_history: 
 
     # Use Groq instead of OpenAI to avoid billing limits
     my_llm = LLM(
-        model="groq/llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         temperature=0.2
     )
 
